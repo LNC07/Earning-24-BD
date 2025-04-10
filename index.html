@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earn Money by Watching Ads</title>
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #main, #withdrawForm {
+      display: none;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 18px;
+      background: #00b894;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    input {
+      padding: 10px;
+      margin: 10px;
+    }
+    #adContainer {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Earn Money by Watching Ads</h2>
+
+<!-- Main Content -->
+<div id="main">
+  <button id="earnButton">Earn 0.1 BDT by Watching Ads</button>
+  <button id="withdrawButton">Withdraw</button>
+</div>
+
+<!-- Withdraw Form -->
+<div id="withdrawForm">
+  <h3>Withdraw Funds</h3>
+  <input type="text" id="method" placeholder="Enter Method (Bkash/Nagad)">
+  <input type="text" id="number" placeholder="Enter Number">
+  <button id="withdrawSubmit">Submit Withdrawal</button>
+</div>
+
+<!-- Ads Section -->
+<div id="adContainer">
+  <script src='//whephiwums.com/sdk.js' data-zone='9195913' data-sdk='show_9195913'></script>
+</div>
+
+<script>
+  // Google Apps Script URL (Backend)
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxnjkhBjbErFI8cOhu8N9aflw3ZAjB4o730Q163PJdcDyzzbAZS1O7ToBxCKpOCpru8-g/exec";
+
+  // Show the main content initially
+  document.getElementById('main').style.display = 'block';
+  
+  // When the user clicks on the 'Earn' button
+  document.getElementById('earnButton').addEventListener('click', function() {
+    // Show the withdraw button after earning
+    alert("You earned 0.1 BDT by watching the ad!");
+
+    // You can later update the earned balance here if needed.
+  });
+
+  // Show the withdraw form when 'Withdraw' is clicked
+  document.getElementById('withdrawButton').addEventListener('click', function() {
+    document.getElementById('withdrawForm').style.display = 'block';
+  });
+
+  // Handle withdrawal form submission
+  document.getElementById('withdrawSubmit').addEventListener('click', function() {
+    const method = document.getElementById('method').value;
+    const number = document.getElementById('number').value;
+
+    if (method && number) {
+      // Prepare data to send to Google Apps Script
+      const formData = {
+        id: 'userTelegramID',  // Replace with actual user Telegram ID
+        balance: 0.1,  // Balance (Can be dynamically updated)
+        method: method,
+        number: number
+      };
+
+      // Send withdrawal request to Google Apps Script
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert('Withdrawal Request Sent Successfully!');
+        document.getElementById('withdrawForm').style.display = 'none';
+      })
+      .catch(error => {
+        alert('Error: ' + error.message);
+      });
+    } else {
+      alert('Please fill in all fields.');
+    }
+  });
+</script>
+
+</body>
+</html>
