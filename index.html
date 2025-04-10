@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monetag Ads Earning</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0f0f0f;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    }
+    .profile {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .profile h2 {
+      margin-bottom: 5px;
+    }
+    .balance {
+      font-size: 24px;
+      margin: 10px 0;
+      color: #00e676;
+    }
+    .btn {
+      background: #00b894;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    .ads {
+      margin-top: 20px;
+    }
+  </style>
+  <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="@Earning_24_BDbot" data-size="large" data-userpic="false" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
+</head>
+<body>
+
+  <div class="container">
+    <div class="profile">
+      <h2 id="username">@guest</h2>
+      <p>Balance: <span class="balance" id="balance">0.00</span> BDT</p>
+    </div>
+    <button class="btn" onclick="watchAd()">Watch Ad & Earn 0.1 BDT</button>
+    <button class="btn" onclick="withdrawBalance()">Withdraw</button>
+
+    <div class="ads" id="adsContainer" style="display:none;">
+      <script src="//whephiwums.com/sdk.js" data-zone="9195913" data-sdk="show_9195913"></script>
+    </div>
+  </div>
+
+  <script>
+    let username = localStorage.getItem('telegram_username') || '@guest';
+    let balance = parseFloat(localStorage.getItem('balance')) || 0.0;
+
+    document.getElementById('username').innerText = username;
+    document.getElementById('balance').innerText = balance.toFixed(2);
+
+    function onTelegramAuth(user) {
+      username = '@' + user.username;
+      localStorage.setItem('telegram_username', username);
+      document.getElementById('username').innerText = username;
+    }
+
+    function watchAd() {
+      const ads = document.getElementById('adsContainer');
+      ads.style.display = 'block';
+
+      setTimeout(() => {
+        balance += 0.1;
+        localStorage.setItem('balance', balance);
+        document.getElementById('balance').innerText = balance.toFixed(2);
+        alert('You earned 0.1 BDT!');
+        ads.style.display = 'none';
+      }, 10000);
+    }
+
+    function withdrawBalance() {
+      if (balance < 100) {
+        alert("Minimum 100 BDT required to withdraw.");
+        return;
+      }
+
+      const number = prompt("Enter your bKash/Nagad number:");
+      const method = prompt("Enter method (bkash/nagad):");
+
+      if (!number || !method) return alert("All fields required.");
+
+      const message = `Withdrawal Request:\nUser: ${username}\nAmount: ${balance.toFixed(2)} BDT\nNumber: ${number}\nMethod: ${method}`;
+      window.open(`mailto:your_email@example.com?subject=Withdrawal Request&body=${encodeURIComponent(message)}`);
+
+      // Deduct balance after withdrawal request
+      balance = 0;
+      localStorage.setItem('balance', balance);
+      document.getElementById('balance').innerText = balance.toFixed(2);
+    }
+  </script>
+</body>
+</html>
