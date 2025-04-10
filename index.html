@@ -54,17 +54,17 @@
     }
     .ads {
       margin-top: 20px;
+      text-align: center;
     }
   </style>
-  <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="@Earning_24_BDbot" data-size="large" data-userpic="false" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
 </head>
 <body>
-
   <div class="container">
     <div class="profile">
       <h2 id="username">@guest</h2>
       <p>Balance: <span class="balance" id="balance">0.00</span> BDT</p>
     </div>
+    <div id="telegram-login-button"></div>
     <button class="btn" onclick="watchAd()">Watch Ad & Earn 0.1 BDT</button>
     <button class="btn" onclick="withdrawBalance()">Withdraw</button>
 
@@ -85,6 +85,19 @@
       localStorage.setItem('telegram_username', username);
       document.getElementById('username').innerText = username;
     }
+
+    function injectTelegramWidget() {
+      const script = document.createElement('script');
+      script.src = 'https://telegram.org/js/telegram-widget.js?22';
+      script.setAttribute('data-telegram-login', 'Earning_24_BDbot');
+      script.setAttribute('data-size', 'large');
+      script.setAttribute('data-userpic', 'false');
+      script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+      script.setAttribute('data-request-access', 'write');
+      document.getElementById('telegram-login-button').appendChild(script);
+    }
+
+    injectTelegramWidget();
 
     function watchAd() {
       const ads = document.getElementById('adsContainer');
@@ -111,9 +124,8 @@
       if (!number || !method) return alert("All fields required.");
 
       const message = `Withdrawal Request:\nUser: ${username}\nAmount: ${balance.toFixed(2)} BDT\nNumber: ${number}\nMethod: ${method}`;
-      window.open(`mailto:your_email@example.com?subject=Withdrawal Request&body=${encodeURIComponent(message)}`);
+      window.open(`mailto:earning24bd@sendapp.uk?subject=Withdrawal Request&body=${encodeURIComponent(message)}`);
 
-      // Deduct balance after withdrawal request
       balance = 0;
       localStorage.setItem('balance', balance);
       document.getElementById('balance').innerText = balance.toFixed(2);
